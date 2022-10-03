@@ -15,13 +15,15 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
-
+import account
 from playground import urls
+from account import urls
 import playground
 # import debug_toolbar
 
 urlpatterns = [
-    path('admin/', admin.site.urls),
+    path('admin/',admin.site.urls),
     path('playground/',include(playground.urls)),
-    # path('__debug__/', include('debug_toolbar.urls'))
+    path('api/user/', include(account.urls)),
+    path('__debug__/', include('debug_toolbar.urls'))
 ]
