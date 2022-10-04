@@ -19,11 +19,13 @@ import account
 from playground import urls
 from account import urls
 import playground
+from crud import views
 # import debug_toolbar
 
 urlpatterns = [
     path('admin/',admin.site.urls),
     path('playground/',include(playground.urls)),
     path('api/user/', include(account.urls)),
-    path('__debug__/', include('debug_toolbar.urls'))
+    path('__debug__/', include('debug_toolbar.urls')),
+    path('studentapi/',view=views.get_student)
 ]

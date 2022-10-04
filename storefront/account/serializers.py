@@ -3,11 +3,52 @@ from statistics import mode
 from xml.dom import ValidationErr
 from rest_framework import serializers
 from account.models import User
+from crud.models import Student
 from . import utils
 from django.utils.encoding import smart_str, force_bytes, DjangoUnicodeDecodeError
 from django.utils.http import urlsafe_base64_decode, urlsafe_base64_encode
 from django.contrib.auth.tokens import PasswordResetTokenGenerator
 """ all the serializer classes turns the queryset or database models into python data models, It's the serialization process """
+
+
+class StudentSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Student
+        fields = ['name','roll','city']
+     
+
+"""Here normal serializer is implemented as the model serializer implemented above"""
+# class StudentSerializer(serializers.Serializer):
+#     name = serializers.CharField(max_length = 255)
+#     roll = serializers.IntegerField()
+#     city = serializers.CharField(max_length = 255)
+#     """ field level validation"""
+
+
+#     def validate_roll(self, value):
+#         if value >= 200:
+#             raise serializers.ValidationError('Seat Full')
+#         return value
+
+
+#     def validate(self, data):
+#         nm = data.get('name')
+#         ct = data.get('city')
+#         if nm.lower() != 'sakib':
+#             raise serializers.ValidationError('error on name sakib')
+#         return data
+
+
+#     def create(self, validated_data):
+#         return Student.objects.create(**validated_data)
+
+#     def update(self, instance, validated_data):
+#         instance.name = validated_data.get('name',instance.name)
+#         instance.roll = validated_data.get('roll',instance.roll)
+#         instance.city = validated_data.get('city',instance.city)
+#         instance.save()
+
+#         return instance
 
 class UserRegistrationSerializer(serializers.ModelSerializer):
 

@@ -6,6 +6,7 @@ from django.contrib.auth import authenticate
 from account.renderers import UserRenderer
 from rest_framework_simplejwt.tokens import RefreshToken
 from rest_framework.permissions import IsAuthenticated
+
 # Create your views here.
 
 """ here the view usage """
@@ -17,6 +18,8 @@ def get_tokens_for_user(user):
         'refresh': str(refresh),
         'access': str(refresh.access_token),
     }
+
+
 
 class UserRegistrationView(APIView):
     renderer_classes = [UserRenderer]
