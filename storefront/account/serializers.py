@@ -14,7 +14,7 @@ from django.contrib.auth.tokens import PasswordResetTokenGenerator
 class StudentSerializer(serializers.ModelSerializer):
     class Meta:
         model = Student
-        fields = ['name','roll','city']
+        fields = ['id','name','roll','city']
      
 
 """Here normal serializer is implemented as the model serializer implemented above"""
