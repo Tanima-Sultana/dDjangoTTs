@@ -13,9 +13,61 @@ from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from rest_framework import status
 from rest_framework.views import APIView
+# for generic APIView and MOdelMixin
+from rest_framework.mixins import ListModelMixin, CreateModelMixin, DestroyModelMixin,UpdateModelMixin,RetrieveModelMixin
+from rest_framework.generics import GenericAPIView
 
 
-""" class based api views all the crud operation is described here """
+#  Here pk is not required for create and list mixins
+class GenericMixinStudentListAndCreate(GenericAPIView, ListModelMixin,CreateModelMixin):
+    """ Generic Mixin based api view classes  """
+    queryset = Student.objects.all()
+    serializer_class = StudentSerializer
+
+    def get(self, request, *args, **kwargs ):
+        return self.list(request,*args, **kwargs)
+
+    def post(self, request, *args, **kwargs ):
+        return self.create(request,*args, **kwargs)
+
+# class GenericMixinStudentCreate(GenericAPIView, CreateModelMixin):
+#     """ Generic Mixin based api view classes  """
+#     queryset = Student.objects.all()
+#     serializer_class = StudentSerializer
+
+#     def post(self, request, *args, **kwargs ):
+#         return self.create(request,*args, **kwargs)
+
+# For retrieve, update and delete PK is needed
+class GenericMixinStudentRetrieveUpdateDestroy(GenericAPIView, RetrieveModelMixin, UpdateModelMixin,DestroyModelMixin):
+    """ Generic Mixin based api view classes  """
+    queryset = Student.objects.all()
+    serializer_class = StudentSerializer
+
+    def get(self, request, *args, **kwargs ):
+        return self.retrieve(request,*args, **kwargs)
+    def put(self, request, *args, **kwargs ):
+        return self.update(request,*args, **kwargs)
+
+    def delete(self, request, *args, **kwargs ):
+        return self.destroy(request,*args, **kwargs)
+
+# class GenericMixinStudentUpdate(GenericAPIView, UpdateModelMixin):
+#     """ Generic Mixin based api view classes  """
+#     queryset = Student.objects.all()
+#     serializer_class = StudentSerializer
+
+#     def put(self, request, *args, **kwargs ):
+#         return self.update(request,*args, **kwargs)
+
+# class GenericMixinStudentDestroy(GenericAPIView, DestroyModelMixin):
+#     """ Generic Mixin based api view classes  """
+#     queryset = Student.objects.all()
+#     serializer_class = StudentSerializer
+
+#     def delete(self, request, *args, **kwargs ):
+#         return self.destroy(request,*args, **kwargs)
+    """ class based api views all the crud operation is described here """
 class StudentAPI(APIView):
     def get(self, request, pk=None,format = None):
         id = pk

@@ -39,7 +39,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'django.contrib.sessions',
-    'playground',
+    # 'playground',
     'store',
     'tags',
     'debug_toolbar',
@@ -118,7 +118,7 @@ DATABASES = {
         'NAME': 'storefront',
         'HOST':'localhost',
         'USER':'root',
-        'PASSWORD':'tanima'
+        'PASSWORD':'root'
     }
 }
 

@@ -16,15 +16,14 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path, include
 import account
-from playground import urls
 from account import urls
-import playground
+# import playground
 from crud import views
 # import debug_toolbar
 
 urlpatterns = [
     path('admin/',admin.site.urls),
-    path('playground/',include(playground.urls)),
+    # path('playground/',include(playground.urls)),
     path('api/user/', include(account.urls)),
     path('__debug__/', include('debug_toolbar.urls')),
     # path('studentapi/',view=views.get_student),     # it is called when we use normal crud operation
@@ -33,7 +32,16 @@ urlpatterns = [
     # path('studentapi/<int:pk>',view=views.function_based_student_api),
 
     # """ class based operation is called here """
-    path('studentapi/',view=views.StudentAPI.as_view()),
-    path('studentapi/<int:pk>',view=views.StudentAPI.as_view())
+    # path('studentapi/',view=views.StudentAPI.as_view()),
+    # path('studentapi/<int:pk>',view=views.StudentAPI.as_view())
+
+    ## generic mixin based operation is called here
+
+    path('studentapi/',view=views.GenericMixinStudentListAndCreate.as_view()),
+    # path('studentapi/',view=views.GenericMixinStudentCreate.as_view()),
+    # path('studentapi/<int:pk>',view=views.GenericMixinStudentUpdate.as_view())
+    path('studentapi/<int:pk>',view=views.GenericMixinStudentRetrieveUpdateDestroy.as_view())
+
+    # path('studentapi/<int:pk>',view=views.GenericMixinStudentRetrieve.as_view())
 
 ]
