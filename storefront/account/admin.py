@@ -5,6 +5,7 @@ from django.contrib.auth.admin import UserAdmin
 
 # Register your models here.
 # username admin@example.com and password admin
+# username admin@co.com and password example.
 
 class UserModelAdmin(UserAdmin):
      # The fields to be used in displaying the User model.

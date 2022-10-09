@@ -10,7 +10,7 @@ from .models import Student
 from account.serializers import StudentSerializer
 from django .http import HttpResponse
 from django.views.decorators.csrf import csrf_exempt
-from rest_framework.decorators import api_view
+from rest_framework.decorators import api_view, permission_classes, authentication_classes
 from rest_framework.response import Response
 from rest_framework import status
 from rest_framework.views import APIView
@@ -18,6 +18,9 @@ from rest_framework.views import APIView
 from rest_framework.mixins import ListModelMixin, CreateModelMixin, DestroyModelMixin,UpdateModelMixin,RetrieveModelMixin
 from rest_framework.generics import GenericAPIView, ListCreateAPIView, RetrieveUpdateDestroyAPIView
 from rest_framework import viewsets
+from rest_framework.authentication import BasicAuthentication, SessionAuthentication
+from rest_framework.permissions import IsAuthenticated,AllowAny, IsAdminUser,IsAuthenticatedOrReadOnly, DjangoModelPermissions
+from . import custompermissions
 
 
 ##using read only model view set
@@ -28,9 +31,12 @@ class StudentReadOnlyModelViewSet(viewsets.ReadOnlyModelViewSet):
 
 ##using model view set  all CRUD operation
 
+
 class StudentModelViewSet(viewsets.ModelViewSet):
     queryset = Student.objects.all()
     serializer_class = StudentSerializer
+    authentication_classes = [SessionAuthentication]
+    permission_classes = [custompermissions.CustomPermissions]
 #uSing viewset all CRUD operation 
 
 class StudentViewSet(viewsets.ViewSet):
@@ -198,6 +204,9 @@ class StudentAPI(APIView):
 """ function based api views all the crud operation is described here"""
 
 @api_view(['GET','POST','PUT','PATCH','DELETE'])
+## authentication and permission are added here
+@authentication_classes([SessionAuthentication])
+@permission_classes([IsAuthenticated])
 def function_based_student_api(request,pk= None):
     if request.method == 'GET':
         id = pk

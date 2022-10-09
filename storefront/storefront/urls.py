@@ -46,8 +46,8 @@ urlpatterns = [
     path('__debug__/', include('debug_toolbar.urls')),
     # path('studentapi/',view=views.get_student),     # it is called when we use normal crud operation
     # """ functon based crud operation is called here """
-    # path('studentapi/',view=views.function_based_student_api),
-    # path('studentapi/<int:pk>',view=views.function_based_student_api),
+    path('studentapi/',view=views.function_based_student_api),
+    path('studentapi/<int:pk>',view=views.function_based_student_api),
 
     # """ class based operation is called here """
     # path('studentapi/',view=views.StudentAPI.as_view()),
@@ -68,7 +68,8 @@ urlpatterns = [
     # path('studentapi/<int:pk>',view=views.ConcreteStudentRetrieveUpdateDestroy.as_view())
 
     ## include router here
-    path('',include(router.urls))
+    # path('',include(router.urls)),
+    # path('auth/',include('rest_framework.urls',namespace='rest_framework'))
 
 
 
