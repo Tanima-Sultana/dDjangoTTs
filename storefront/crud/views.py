@@ -1,3 +1,4 @@
+from ast import Delete
 from functools import partial
 from django.shortcuts import render
 import io
@@ -15,7 +16,78 @@ from rest_framework import status
 from rest_framework.views import APIView
 # for generic APIView and MOdelMixin
 from rest_framework.mixins import ListModelMixin, CreateModelMixin, DestroyModelMixin,UpdateModelMixin,RetrieveModelMixin
-from rest_framework.generics import GenericAPIView
+from rest_framework.generics import GenericAPIView, ListCreateAPIView, RetrieveUpdateDestroyAPIView
+from rest_framework import viewsets
+
+
+##using read only model view set
+
+class StudentReadOnlyModelViewSet(viewsets.ReadOnlyModelViewSet):
+     queryset = Student.objects.all()
+     serializer_class = StudentSerializer
+
+##using model view set  all CRUD operation
+
+class StudentModelViewSet(viewsets.ModelViewSet):
+    queryset = Student.objects.all()
+    serializer_class = StudentSerializer
+#uSing viewset all CRUD operation 
+
+class StudentViewSet(viewsets.ViewSet):
+    def list(self, request):
+        stu = Student.objects.all()
+        serializer = StudentSerializer(stu, many = True)
+        return Response(serializer.data)
+
+
+    def create(self, request):
+        serializer = StudentSerializer(data = request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response({'mgs':'Data Created'}, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors,status=status.HTTP_400_BAD_REQUEST)
+
+
+    def retrieve(self, request, pk):
+        id = pk 
+        if id is not None:
+            stu = Student.objects.get(id = pk)
+            serializer =  StudentSerializer(stu)
+            return Response(serializer.data)
+
+    def update(self, request,pk):
+        id = pk
+        stu = Student.objects.get(pk = id)
+        serializer =  StudentSerializer(stu,data = request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response({'mgs':'Student completely Updated'})
+        
+    def partial_update(self, request,pk):
+        id = pk
+        stu = Student.objects.get(pk = id)
+        serializer =  StudentSerializer(stu,data=request.data,partial = True)
+        if serializer.is_valid():
+            serializer.save()
+            return Response({'mgs':'Student partially Updated'})
+
+
+    def destroy(self, request, pk):
+        id = pk 
+        stu = Student.objects.get(pk = id)
+        stu.delete()
+        return Response({'mgs':'Student Deleted'})
+
+# Using concrete APIView for create and list
+
+class ConcreteStudentListAndCreate(ListCreateAPIView):
+    queryset = Student.objects.all()
+    serializer_class = StudentSerializer
+
+
+class ConcreteStudentRetrieveUpdateDestroy(RetrieveUpdateDestroyAPIView):
+    queryset = Student.objects.all()
+    serializer_class = StudentSerializer    
 
 
 #  Here pk is not required for create and list mixins

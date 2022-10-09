@@ -19,7 +19,25 @@ import account
 from account import urls
 # import playground
 from crud import views
+from rest_framework.routers import DefaultRouter
 # import debug_toolbar
+
+
+# creating router object
+router = DefaultRouter()
+
+# register with router for viewset
+# router.register('studentapi',views.StudentViewSet,basename='student')
+# router.register('studentapi/<int:pk>',views.StudentViewSet,basename='student')
+
+
+# register with router for model viewset
+router.register('studentapi',views.StudentModelViewSet,basename='student')
+router.register('studentapi/<int:pk>',views.StudentModelViewSet,basename='student')
+
+# register with router for read only model viewset
+# router.register('studentapi',views.StudentReadOnlyModelViewSet,basename='student')
+# router.register('studentapi/<int:pk>',views.StudentReadOnlyModelViewSet,basename='student')
 
 urlpatterns = [
     path('admin/',admin.site.urls),
@@ -37,11 +55,21 @@ urlpatterns = [
 
     ## generic mixin based operation is called here
 
-    path('studentapi/',view=views.GenericMixinStudentListAndCreate.as_view()),
+    # path('studentapi/',view=views.GenericMixinStudentListAndCreate.as_view()),
     # path('studentapi/',view=views.GenericMixinStudentCreate.as_view()),
     # path('studentapi/<int:pk>',view=views.GenericMixinStudentUpdate.as_view())
-    path('studentapi/<int:pk>',view=views.GenericMixinStudentRetrieveUpdateDestroy.as_view())
+    # path('studentapi/<int:pk>',view=views.GenericMixinStudentRetrieveUpdateDestroy.as_view()),
 
     # path('studentapi/<int:pk>',view=views.GenericMixinStudentRetrieve.as_view())
+
+
+    ## concrete api view
+    # path('studentapi/',view=views.ConcreteStudentListAndCreate.as_view()),
+    # path('studentapi/<int:pk>',view=views.ConcreteStudentRetrieveUpdateDestroy.as_view())
+
+    ## include router here
+    path('',include(router.urls))
+
+
 
 ]
