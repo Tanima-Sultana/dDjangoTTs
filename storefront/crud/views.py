@@ -18,9 +18,13 @@ from rest_framework.views import APIView
 from rest_framework.mixins import ListModelMixin, CreateModelMixin, DestroyModelMixin,UpdateModelMixin,RetrieveModelMixin
 from rest_framework.generics import GenericAPIView, ListCreateAPIView, RetrieveUpdateDestroyAPIView
 from rest_framework import viewsets
-from rest_framework.authentication import BasicAuthentication, SessionAuthentication
+from rest_framework.authentication import BasicAuthentication, SessionAuthentication, TokenAuthentication
+# from rest_framework_simplejwt.authentication import JWTAuthentication
 from rest_framework.permissions import IsAuthenticated,AllowAny, IsAdminUser,IsAuthenticatedOrReadOnly, DjangoModelPermissions
-from . import custompermissions
+from rest_framework.throttling import AnonRateThrottle, UserRateThrottle
+from .throttling import CustomUserThrottle
+# from . import custompermissions
+# from .customauth import CustomAuthentication
 
 
 ##using read only model view set
@@ -36,7 +40,15 @@ class StudentModelViewSet(viewsets.ModelViewSet):
     queryset = Student.objects.all()
     serializer_class = StudentSerializer
     authentication_classes = [SessionAuthentication]
-    permission_classes = [custompermissions.CustomPermissions]
+    permission_classes = [IsAuthenticatedOrReadOnly]
+    # throttle_classes = [AnonRateThrottle, UserRateThrottle]
+
+    ### added custom user throttling here
+    throttle_classes = [AnonRateThrottle, CustomUserThrottle]
+
+
+    ### added cusstom permission here
+    # permission_classes = [custompermissions.CustomPermissions]
 #uSing viewset all CRUD operation 
 
 class StudentViewSet(viewsets.ViewSet):

@@ -112,13 +112,15 @@ WSGI_APPLICATION = 'storefront.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/4.1/ref/settings/#databases
 
+# for office mysql password is tanima and for private desktop mysql password is root
+
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
         'NAME': 'storefront',
         'HOST':'localhost',
         'USER':'root',
-        'PASSWORD':'root'
+        'PASSWORD':'tanima'
     }
 }
 
@@ -215,3 +217,16 @@ CORS_ALLOWED_ORIGINS = [
 #     'DEFAULT_PERMISSION_CLASSES': ['rest_framework.permissions.IsAuthenticated']
 
 # }
+
+### Global setting for throttling
+
+REST_FRAMEWORK = {
+    'DEFAULT_THROTTLE_RATES':{
+        'anon': '2/day',
+        'user':'5/hour',
+        'custom':'3/minute',
+    }
+}
+
+
+
